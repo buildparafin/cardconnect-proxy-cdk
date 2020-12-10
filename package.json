@@ -1,0 +1,20 @@
+{
+  "name": "cardconnect-proxy-cdk",
+  "version": "0.1.0",
+  "bin": {
+    "cardconnect-proxy-cdk": "bin/cardconnect-proxy-cdk.js"
+  },
+  "scripts": {
+    "build": "echo \"The build step is not required when using JavaScript!\" && exit 0",
+    "cdk": "cdk",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "1.77.0",
+    "aws-cdk": "1.77.0",
+    "jest": "^26.4.2"
+  },
+  "dependencies": {
+    "@aws-cdk/core": "1.77.0"
+  }
+}
