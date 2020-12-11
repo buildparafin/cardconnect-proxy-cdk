@@ -9,13 +9,16 @@ export class CardconnectProxyCdkTsStack extends cdk.Stack {
 
     const proxy = new Proxy(
       this,
-      "Proxy", // Name
-      "https://fts-uat.cardconnect.com/cardconnect/rest", // Remote endpoint (test environment)
-      "Basic dGVzdGluZzp0ZXN0aW5nMTIz", // Auth token (test environment, can be loaded from Secrets)
-      "restrictMerchIds.handler", // Optional lambda that restricts valid requests
+      "ParafinProxy", // ID
       {
         apiName: "HttpProxy",
         endpointType: EndpointType.EDGE,
+        baseUrl: "https://fts-uat.cardconnect.com/cardconnect/rest",
+        cardConnectAuth: "Basic dGVzdGluZzp0ZXN0aW5nMTIz",
+        authHandler: "restrictMerchIds.handler",
+        enableCloudwatch: true,
+        requireApiKey: true,
+
       }
     );
 
