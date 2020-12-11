@@ -27,6 +27,8 @@ export interface ProxyProps {
   // Automatically configure an AWS CloudWatch role for API Gateway if set to true
   // Default value is true
   readonly enableCloudwatch?: boolean;
+
+  readonly requireApiKey?: boolean;
 }
 
 export class Proxy extends Construct {
@@ -37,6 +39,9 @@ export class Proxy extends Construct {
   public readonly authorizer: apiGateway.RequestAuthorizer | undefined;
   public readonly authorization: string;
   public readonly enableCloudwatch: boolean;
+  public readonly requireApiKey: boolean; 
+  public readonly apiKey: apiGateway.ApiKey | undefined;
+  public readonly usagePlan: apiGateway.UsagePlan | undefined;
 
   constructor(
     scope: Construct,
@@ -59,8 +64,24 @@ export class Proxy extends Construct {
       endpointConfiguration: {
         types: [props.endpointType],
       },
-      cloudWatchRole: enableCloudwatch,
+      cloudWatchRole: enableCloudwatch
     });
+
+    this.requireApiKey = props.requireApiKey == undefined ? true : props.requireApiKey;
+
+    if (this.requireApiKey) {
+      this.apiKey = new apiGateway.ApiKey(this, "Parafin", {
+        apiKeyName: "Parafin",
+        description: "To be used by Parafin to access the card connect data",
+      });
+      this.api.addUsagePlan("CardConnectData", {
+        name: "CardConnectData",
+        description: "Usage of the CardConnect proxy API to expose CardConnect data",
+        apiKey: this.apiKey,
+        apiStages: [{api: this.api, stage: this.api.deploymentStage}],
+      })
+
+    }
   }
 
   public addEndpoint(path: string, method: string = "GET") {
@@ -78,6 +99,7 @@ export class Proxy extends Construct {
         },
       }),
       {
+        apiKeyRequired: this.requireApiKey,
         authorizer: this.authorizer,
       }
     );

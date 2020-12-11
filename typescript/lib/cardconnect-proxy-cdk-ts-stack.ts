@@ -9,14 +9,15 @@ export class CardconnectProxyCdkTsStack extends cdk.Stack {
 
     const proxy = new Proxy(
       this,
-      "ParafinProxy", // ID
+      "ParafinProxyNew", // ID
       {
-        apiName: "HttpProxy",
+        apiName: "HttpProxyNew",
         endpointType: EndpointType.EDGE,
         baseUrl: "https://fts-uat.cardconnect.com/cardconnect/rest",
         cardConnectAuth: "Basic dGVzdGluZzp0ZXN0aW5nMTIz",
         authHandler: "restrictMerchIds.handler",
         enableCloudwatch: true,
+        requireApiKey: true,
       }
     );
 
