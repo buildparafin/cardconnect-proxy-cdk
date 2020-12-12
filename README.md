@@ -6,16 +6,16 @@ There is both a JavaScript and TypeScript version; you may run this out of eithe
 
 ## Configuring
 
-A stack for running a secure CardConnect proxy is in `./lib/cardconnect-proxy-cdk-stack.js` and may be either imported into an existing app, or run from the app `./bin/cardconnect-proxy-cdk.js`.
+A stack for running a secure CardConnect proxy is in `./bin/cardconnect-proxy-cdk.js` and may be either run or imported into an existing app.
 
 In this file you can specify:
 
 - remote URL for CardConnect
 - Authentication token (may be loaded from Secrets Manager)
-- A basic lambda for filtering valid requests.
+- List of allowed Merchant Ids
 - Which exact endpoints to expose (currently just `/funding` is needed).
-
-The default lambda is in `./lib/lambdas/restrictMerchIds.js` and contains a small whitelist of merchids, that may be customized. A custom access policy can also be introduced there if you wanted to have an IP whitelist, or IAM restrictions.
+- Whether to require an API Key
+- Which IP addresses to allow to access this endpoint
 
 As needed, this may also be attached to a subdomain or to an authentication system.
 
@@ -30,24 +30,6 @@ npm run build
 ```
 
 This will install the necessary CDK, then the dependencies, and then build your TypeScript files and your CloudFormation template.
-
-## Deploy
-
-Run `cdk deploy`. This will deploy / redeploy your Stack to your AWS Account.
-
-After the deployment you will see the API's URL, which represents the url you can then use.
-
-## Build
-
-To build this app, you need to be in this example's root folder. Then run the following:
-
-```bash
-npm install -g aws-cdk
-npm install
-npm run build
-```
-
-This will install the necessary CDK, then this example's dependencies, and then build your TypeScript files and your CloudFormation template.
 
 ## Deploy
 
@@ -78,7 +60,7 @@ https://klf2tnospb.execute-api.us-east-1.amazonaws.com/prod/funding/?merchid=496
 {"Message":"User is not authorized to access this resource with an explicit deny"}
 ```
 
-## CDK Javascript Boilerplate
+## CDK Boilerplate
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app. The build step is not required when using JavaScript.
 
