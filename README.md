@@ -6,7 +6,26 @@ There is both a JavaScript and TypeScript version; you may run this out of eithe
 
 ## Configuring
 
-A stack for running a secure CardConnect proxy is in `./bin/cardconnect-proxy-cdk.js` and may be either run or imported into an existing app.
+You may either import `./lib/proxy` into your app or run the secure CardConnect proxy in `./bin/cardconnect-proxy-cdk.js`
+```
+    const proxy = new Proxy(
+      this,
+      "ParafinProxy", // ID
+      {
+        apiName: "CardConnect",
+        baseUrl: "https://fts-uat.cardconnect.com/cardconnect/rest",
+        // This is the public test-account auth.  In practice this should be loaded from AWS Secrets Manager and not in Git.
+        cardConnectAuth: "Basic dGVzdGluZzp0ZXN0aW5nMTIz",
+        merchidWhitelist: ["496160873885", "496160873888"],
+        enableCloudwatch: true,
+        requireApiKey: false,
+        ipWhitelist: undefined,
+      }
+    );
+
+    // Add a single endpoint for now, which will be filtered by merchid whitelist
+    proxy.addEndpoint("funding", "GET");
+```
 
 In this file you can specify:
 
