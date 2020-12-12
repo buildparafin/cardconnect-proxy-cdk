@@ -31,8 +31,9 @@ export interface ProxyProps {
   // Create and require the api key for all requests to this API. Default is true.
   readonly requireApiKey?: boolean;
 
-  // Provide an IP whitelist. Use empty array to allow all IPs.
-  readonly ipWhitelist: string[];
+  // Provide an IP whitelist. Using empty array doesn't allow any IPs, 
+  // using undefined opens up to all IPs. Default is undefined i.e. open to all IPs.
+  readonly ipWhitelist?: string[];
 }
 
 export class Proxy extends Construct {
@@ -61,7 +62,7 @@ export class Proxy extends Construct {
       this.authorizer = this.getAuthorizer(props.authHandler);
     }
 
-    const policy: iam.PolicyDocument | undefined = (props.ipWhitelist.length > 0) ? this.createResourcePolicy(props.ipWhitelist) : undefined;
+    const policy: iam.PolicyDocument | undefined = props.ipWhitelist == undefined ? undefined : this.createResourcePolicy(props.ipWhitelist);
 
 
     this.api = new apiGateway.RestApi(this, "API", {
