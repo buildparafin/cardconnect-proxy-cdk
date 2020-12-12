@@ -17,6 +17,7 @@ export class CardconnectProxyCdkStack extends cdk.Stack {
         merchidWhitelist: ["496160873885", "496160873888"],
         enableCloudwatch: true,
         requireApiKey: false,
+        ipWhitelist: undefined,
       }
     );
 
