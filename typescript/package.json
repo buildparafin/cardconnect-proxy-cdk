@@ -2,7 +2,7 @@
   "name": "cardconnect-proxy-cdk-ts",
   "version": "0.1.0",
   "bin": {
-    "cardconnect-proxy-cdk-ts": "bin/cardconnect-proxy-cdk-ts.js"
+    "cardconnect-proxy-cdk-ts": "bin/cardconnect-proxy-cdk.js"
   },
   "scripts": {
     "build": "tsc",

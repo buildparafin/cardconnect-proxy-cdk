@@ -1,4 +1,4 @@
-import { Construct, CfnOutput, Duration } from "@aws-cdk/core";
+import { Construct, Duration } from "@aws-cdk/core";
 import { AssetCode, Function, Runtime } from "@aws-cdk/aws-lambda";
 import iam = require("@aws-cdk/aws-iam");
 
@@ -8,9 +8,6 @@ import { join } from "path";
 export interface ProxyProps {
   // Name for the Proxy as it is deployed on API Gateway
   readonly apiName: string;
-
-  // The endpoint type to be used for the API Gateway
-  readonly endpointType: apiGateway.EndpointType;
 
   // Base url for CardConnect
   readonly baseUrl: string;
@@ -23,6 +20,7 @@ export interface ProxyProps {
   // requests Parafin is allowed to make. Once the request is authenticated by
   // the lambda, the request is directly proxied to CardConnect by API Gateway using
   // the HTTP integration.
+  // Limited to 300 (by environment variable restrictions)
   readonly merchidWhitelist?: string[];
 
   // Automatically configure an AWS CloudWatch role for API Gateway if set to true
@@ -69,7 +67,7 @@ export class Proxy extends Construct {
     this.api = new apiGateway.RestApi(this, "API", {
       restApiName: `${props.apiName}Proxy`,
       endpointConfiguration: {
-        types: [props.endpointType],
+        types: [apiGateway.EndpointType.EDGE],
       },
       cloudWatchRole: enableCloudwatch,
       policy: policy,
