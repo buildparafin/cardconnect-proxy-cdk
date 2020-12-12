@@ -30,6 +30,9 @@ export interface ProxyProps {
 
   // Create and require the api key for all requests to this API. Default is true.
   readonly requireApiKey?: boolean;
+
+  // Provide an IP whitelist. Use empty array to allow all IPs.
+  readonly ipWhitelist: string[];
 }
 
 export class Proxy extends Construct {
@@ -58,12 +61,16 @@ export class Proxy extends Construct {
       this.authorizer = this.getAuthorizer(props.authHandler);
     }
 
+    const policy: iam.PolicyDocument | undefined = (props.ipWhitelist.length > 0) ? this.createResourcePolicy(props.ipWhitelist) : undefined;
+
+
     this.api = new apiGateway.RestApi(this, "API", {
       restApiName: props.apiName,
       endpointConfiguration: {
         types: [props.endpointType],
       },
-      cloudWatchRole: enableCloudwatch
+      cloudWatchRole: enableCloudwatch,
+      policy: policy
     });
 
     this.requireApiKey = props.requireApiKey == undefined ? true : props.requireApiKey;
@@ -93,6 +100,31 @@ export class Proxy extends Construct {
         authorizer: this.authorizer,
       }
     );
+  }
+
+  private createResourcePolicy(ipWhitelist: string[]): iam.PolicyDocument {
+    return iam.PolicyDocument.fromJson({
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": "*",
+          "Action": "execute-api:Invoke",
+          "Resource": "execute-api:/*"
+        },
+        {
+          "Effect": "Deny",
+          "Principal": "*",
+          "Action": "execute-api:Invoke",
+          "Resource": "execute-api:/*",
+          "Condition": {
+            "NotIpAddress": {
+                "aws:SourceIp": ipWhitelist
+            }
+          }
+        }
+      ]
+    });
   }
 
   // Add API Key requirement to the created RestApi
