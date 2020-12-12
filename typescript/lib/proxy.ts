@@ -3,6 +3,7 @@ import { AssetCode, Function, Runtime } from "@aws-cdk/aws-lambda";
 import iam = require("@aws-cdk/aws-iam");
 
 import * as apiGateway from "@aws-cdk/aws-apigateway";
+import { join } from "path";
 
 export interface ProxyProps {
   // Name for the Proxy as it is deployed on API Gateway
@@ -80,7 +81,7 @@ export class Proxy extends Construct {
     }
   }
 
-  public addEndpoint(path: string, method: string = "GET") {
+  public addEndpoint(path: string, filterOn?: string, method: string = "GET") {
     new apiGateway.Resource(this, path, {
       parent: this.api.root,
       pathPart: path,
