@@ -1,12 +1,9 @@
-#!/usr/bin/env node
+import * as cdk from "@aws-cdk/core";
 
-const cdk = require("@aws-cdk/core");
-const { ApiKey, EndpointType } = require("@aws-cdk/aws-apigateway");
+import { Proxy } from "../lib/proxy";
 
-const { Proxy } = require("../lib/proxy");
-
-class CardconnectProxyCdkStack extends cdk.Stack {
-  constructor(scope, id, props) {
+export class CardconnectProxyCdkStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     const proxy = new Proxy(

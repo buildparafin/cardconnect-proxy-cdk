@@ -1,19 +1,8 @@
-// List of merchids to allow querying for.  Leave it empty to allow all.
-const merchid_whitelist = ["496160873888"];
-
-exports.handler = function (event, context, callback) {
-  if (
-    !merchid_whitelist ||
-    merchid_whitelist.includes(event.queryStringParameters.merchid)
-  ) {
-    callback(null, generatePolicy("Allow"));
-  } else {
-    callback(null, generatePolicy("Deny"));
-  }
-};
+// List of merchids to allow querying for
+const merchid_whitelist = process.env.MERCHIDS.split(",");
 
 // Helper function to generate an IAM policy
-var generatePolicy = function (effect) {
+var generatePolicy = function (allow) {
   return {
     principalId: "user",
     policyDocument: {
@@ -21,10 +10,15 @@ var generatePolicy = function (effect) {
       Statement: [
         {
           Action: "execute-api:Invoke",
-          Effect: effect,
+          Effect: allow ? "Allow" : "Deny",
           Resource: "*",
         },
       ],
     },
   };
+};
+
+exports.handler = function (event, context, callback) {
+  allow = merchid_whitelist.includes(event.queryStringParameters.merchid);
+  callback(null, generatePolicy(allow));
 };
