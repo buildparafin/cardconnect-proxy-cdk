@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const cdk = require("@aws-cdk/core");
-const { ApiKey, EndpointType } = require("@aws-cdk/aws-apigateway");
 
 const { Proxy } = require("../lib/proxy");
 

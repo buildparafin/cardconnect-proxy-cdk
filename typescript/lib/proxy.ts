@@ -147,7 +147,7 @@ export class Proxy extends Construct {
   ): apiGateway.RequestAuthorizer {
     let apiGatewayRole = new iam.Role(this, "cc_apiGateway_role", {
       assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
-      roleName: "RestApiAuthHandlerRole",
+      roleName: "cc_apiGateway_role",
       inlinePolicies: {
         invokeLambdas: new iam.PolicyDocument({
           statements: [
@@ -171,7 +171,7 @@ export class Proxy extends Construct {
     let role = new iam.Role(this, "RestApiAuthHandlerRole", {
       assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
     });
-    basicAuth.grantInvoke(apiGatewayRole);
+    basicAuth.grantInvoke(role);
 
     return new apiGateway.RequestAuthorizer(
       this,
