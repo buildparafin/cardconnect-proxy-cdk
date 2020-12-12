@@ -18,7 +18,7 @@ export class CardconnectProxyCdkTsStack extends cdk.Stack {
         authHandler: "restrictMerchIds.handler",
         enableCloudwatch: true,
         requireApiKey: true,
-
+        ipWhitelist: undefined
       }
     );
 
