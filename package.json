@@ -1,9 +1,11 @@
 {
-  "name": "cardconnect-proxy-cdk-ts",
-  "version": "0.1.0",
+  "name": "cardconnect-proxy-cdk",
+  "version": "0.9.0",
   "bin": {
-    "cardconnect-proxy-cdk-ts": "bin/cardconnect-proxy-cdk.js"
+    "cardconnect-proxy-cdk": "bin/cardconnect-proxy-cdk.js"
   },
+  "main": "lib/proxy.js",
+  "types": "lib/proxy.d.ts",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
@@ -22,6 +24,7 @@
   },
   "dependencies": {
     "@aws-cdk/aws-apigateway": "^1.77.0",
+    "@aws-cdk/aws-lambda": "^1.77.0",
     "@aws-cdk/core": "1.77.0",
     "source-map-support": "^0.5.16"
   }

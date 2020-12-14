@@ -3,6 +3,7 @@
 const cdk = require("@aws-cdk/core");
 
 const { Proxy } = require("../lib/proxy");
+// const { Proxy } = require("secure-proxy-cdk");
 
 class CardconnectProxyCdkStack extends cdk.Stack {
   constructor(scope, id, props) {
