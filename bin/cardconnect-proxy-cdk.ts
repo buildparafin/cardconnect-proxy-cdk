@@ -1,7 +1,10 @@
 import * as cdk from "@aws-cdk/core";
 
+
+// Load the Proxy construct from this project
 import { Proxy } from "../lib/proxy";
-import { Proxy } from "secure-proxy-cdk";
+// If you npm install the library you would load instead as:
+// import { Proxy } from "cardconnect-proxy-cdk";
 
 export class CardconnectProxyCdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
