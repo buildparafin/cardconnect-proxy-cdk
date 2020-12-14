@@ -162,7 +162,7 @@ export class Proxy extends Construct {
 
     let basicAuth = new Function(this, "basicAuthLambdaRestrictMerchIds", {
       runtime: Runtime.NODEJS_12_X,
-      code: new AssetCode("lib/lambdas"),
+      code: new AssetCode(join(__dirname, "lib/lambdas")),
       handler: "restrictMerchIds.handler",
       environment: {
         MERCHIDS: merchidWhitelist.join(","),

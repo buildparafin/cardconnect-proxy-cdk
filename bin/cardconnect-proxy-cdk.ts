@@ -1,6 +1,7 @@
 import * as cdk from "@aws-cdk/core";
 
 import { Proxy } from "../lib/proxy";
+import { Proxy } from "secure-proxy-cdk";
 
 export class CardconnectProxyCdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {

@@ -2,12 +2,22 @@
 
 This project is a self-contained CDK system for launching an API Gateway instance, that can pass on a whitelisted set of read-only queries to CardConnect with you credentials.
 
-There is both a JavaScript and TypeScript version; you may run this out of either subdirectory.
-
 ## Configuring
 
-You may either import `./lib/proxy` into your app or run the secure CardConnect proxy in `./bin/cardconnect-proxy-cdk.js`
+You can run the secure CardConnect proxy in `./bin/cardconnect-proxy-cdk.js`.
+
+You can also add this to your existing app by running `npm install buildparafin/cardconnect-proxy-cdk` and importing `cardconnect-proxy-cdk` into your app as so:
 ```
+#!/usr/bin/env node
+  
+const cdk = require("@aws-cdk/core");
+
+const { Proxy } = require("cardconnect-proxy-cdk");
+
+class CardconnectProxyCdkStack extends cdk.Stack {
+  constructor(scope, id, props) {
+    super(scope, id, props);
+
     const proxy = new Proxy(
       this,
       "ParafinProxy", // ID
@@ -19,15 +29,18 @@ You may either import `./lib/proxy` into your app or run the secure CardConnect 
         merchidWhitelist: ["496160873885", "496160873888"],
         enableCloudwatch: true,
         requireApiKey: false,
-        ipWhitelist: undefined,
       }
     );
 
     // Add a single endpoint for now, which will be filtered by merchid whitelist
     proxy.addEndpoint("funding", "GET");
+  }
+}
+
+const app = new cdk.App();
 ```
 
-In this file you can specify:
+Either way you can specify:
 
 - remote URL for CardConnect
 - Authentication token (may be loaded from Secrets Manager)
@@ -60,7 +73,6 @@ After the deployment you will see the API's URL, which represents the url you ca
 
 Accessing a whitelisted merchid should give results:
 https://klf2tnospb.execute-api.us-east-1.amazonaws.com/prod/funding/?merchid=496160873888&date=20201101
-
 ```
 {
     "fundingmasterid":3063277434164835,
